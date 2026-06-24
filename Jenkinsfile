@@ -1,5 +1,9 @@
 pipeline{
     agent any 
+        environment {
+        IMAGE_NAME = "myapp"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
     stages{
         stage("Checkout"){
             steps{
@@ -8,7 +12,10 @@ pipeline{
         }
         stage("Docker build"){
             steps{
-                sh "docker build -t myapp:v1 ."
+                sh '''
+                docker build -t $IMAGE_NAME:$IMAGE_TAG .
+
+                '''
             }
         }
         stage("verify image"){
